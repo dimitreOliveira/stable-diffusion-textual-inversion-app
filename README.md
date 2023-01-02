@@ -10,6 +10,10 @@ TODO:
   - Tests
 - Add Docstrings
 - Add Typing
+- Add Git pipeline hooks
+  - Linting
+  - Formatter
+  - Tests
 - Update README
   - Initial README release
   - Stable Diffusion license disclaimer
