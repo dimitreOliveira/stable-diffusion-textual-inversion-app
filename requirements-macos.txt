@@ -1,0 +1,5 @@
+numpy
+keras-cv==0.4
+tensorflow-datasets
+tensorflow-macos==2.11.0
+# tensorflow-metal
