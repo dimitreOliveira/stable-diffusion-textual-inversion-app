@@ -1,6 +1,10 @@
-# stable-diffusion-textual-inversion-app
+# StableDiffusion - Textual-Inversion
 
-TODO:
+![](https://i.imgur.com/KqEeBsM.jpg)
+
+This code was heavily inpired by the [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/) Keras code example from Luke Wood.
+
+TODO list:
 
 - Makefile commands
   - Linting
@@ -12,7 +16,7 @@ TODO:
 - Improve docstrings
 - Tests
 - Images inputs
-  - [ ] From urls
+  - [x] From urls
   - [ ] From images
   - [ ] Single and/or group images
 - Git pipeline hooks
@@ -22,6 +26,10 @@ TODO:
 - Update README
   - Initial README release
   - Stable Diffusion license disclaimer
+  - Sections
+    - Description
+    - Training
+    - Inference (notebook/app)
 - Custom TensorFlow signature to embed the image generation process
 - Gradio APP
 - StableDiffusionV2 support
