@@ -1,11 +1,14 @@
 import numpy as np
 import tensorflow as tf
 from keras_cv import layers as cv_layers
+from keras_cv.clip_tokenizer import SimpleTokenizer
 
 from app.model_utils import pad_embedding
 
 
-def assemble_image_dataset(urls):
+def assemble_image_dataset(urls: list[str]) -> tf.data.Dataset:
+    # TODO: this function is too big, it should be broken into 3
+    """Downloads all images from the given URLs, process them and creates a TensorFlow dataset."""
     # Fetch all remote files
     files = [tf.keras.utils.get_file(origin=url) for url in urls]
 
@@ -17,7 +20,7 @@ def assemble_image_dataset(urls):
 
     # The StableDiffusion image encoder requires images to be normalized to the
     # [-1, 1] pixel value range
-    images = images / 127.5 - 1
+    images = [(img / 127.5 - 1) for img in images]
 
     # Create the tf.data.Dataset
     image_dataset = tf.data.Dataset.from_tensor_slices(images)
@@ -39,7 +42,10 @@ def assemble_image_dataset(urls):
     return image_dataset
 
 
-def assemble_text_dataset(prompts, placeholder_token, tokenizer, max_prompt_length):
+def assemble_text_dataset(
+    prompts: list[str], placeholder_token, tokenizer, max_prompt_length
+) -> tf.data.Dataset:
+    """Tokenize and pad all prompts and creates a TensorFlow dataset."""
     prompts = [prompt.format(placeholder_token) for prompt in prompts]
     embeddings = [tokenizer.encode(prompt) for prompt in prompts]
     embeddings = [
@@ -51,7 +57,15 @@ def assemble_text_dataset(prompts, placeholder_token, tokenizer, max_prompt_leng
     return text_dataset
 
 
-def assemble_dataset(urls, prompts, placeholder_token, tokenizer, max_prompt_length):
+def assemble_dataset(
+    urls: list[str],
+    prompts: list[str],
+    placeholder_token: str,
+    tokenizer: SimpleTokenizer,
+    max_prompt_length: int,
+) -> tf.data.Dataset:
+    # TODO: maybe it would be more efficient to combine all images with all prompts to have more diversity?
+    """Combines the image and text datasets into an unified TensorFlow dataset."""
     image_dataset = assemble_image_dataset(urls)
     text_dataset = assemble_text_dataset(
         prompts, placeholder_token, tokenizer, max_prompt_length
@@ -66,7 +80,14 @@ def assemble_dataset(urls, prompts, placeholder_token, tokenizer, max_prompt_len
     return tf.data.Dataset.zip((image_dataset, text_dataset))
 
 
-def get_simple_dataset(urls, prompts, placeholder_token, tokenizer, max_prompt_length):
+def get_simple_dataset(
+    urls: list[str],
+    prompts: list[str],
+    placeholder_token: str,
+    tokenizer: SimpleTokenizer,
+    max_prompt_length: int,
+) -> tf.data.Dataset:
+    """Return a simple dataset, this could be using only either "single" or "group" prompts."""
     ds = assemble_dataset(
         urls=urls,
         prompts=prompts,
@@ -77,7 +98,10 @@ def get_simple_dataset(urls, prompts, placeholder_token, tokenizer, max_prompt_l
     return ds
 
 
-def get_dataset(single_ds, group_ds):
+def get_dataset(
+    single_ds: tf.data.Dataset, group_ds: tf.data.Dataset
+) -> tf.data.Dataset:
+    """Combines two simple datasets "single" and "group" into a single one."""
     concat_ds = single_ds.concatenate(group_ds)
     ds = concat_ds.batch(1).shuffle(
         concat_ds.cardinality(), reshuffle_each_iteration=True

@@ -1,3 +1,4 @@
+import keras_cv
 import tensorflow as tf
 
 from app.model_utils import (get_position_ids, get_timestep_embedding,
@@ -7,11 +8,11 @@ from app.model_utils import (get_position_ids, get_timestep_embedding,
 class StableDiffusionFineTuner(tf.keras.Model):
     def __init__(
         self,
-        stable_diffusion,
-        training_image_encoder,
-        noise_scheduler,
-        max_prompt_length,
-        placeholder_token,
+        stable_diffusion: keras_cv.models.StableDiffusion,
+        training_image_encoder: tf.keras.Model,
+        noise_scheduler: keras_cv.models.stable_diffusion.NoiseScheduler,
+        max_prompt_length: int,
+        placeholder_token: str,
         **kwargs
     ):
         super().__init__(**kwargs)

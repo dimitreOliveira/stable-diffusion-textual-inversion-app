@@ -1,10 +1,10 @@
-EPOCHS = 1  # 50
-MAX_PROMPT_LENGTH = 77
-placeholder_token = "<custom-token>"
-initializer_token = "cat"
-output_folder = "example"
+EPOCHS: int = 1  # 50
+MAX_PROMPT_LENGTH: int = 77
+placeholder_token: str = "<custom-token>"
+initializer_token: str = "cat"
+output_folder: str = "example"
 
-single_urls = [
+single_urls: list[str] = [
     "https://i.imgur.com/VIedH1X.jpg",
     "https://i.imgur.com/eBw13hE.png",
     "https://i.imgur.com/oJ3rSg7.png",
@@ -12,13 +12,13 @@ single_urls = [
     "https://i.imgur.com/4Q6WWyI.jpg",
 ]
 
-group_urls = [
+group_urls: list[str] = [
     "https://i.imgur.com/yVmZ2Qa.jpg",
     "https://i.imgur.com/JbyFbZJ.jpg",
     "https://i.imgur.com/CCubd3q.jpg",
 ]
 
-single_prompts = [
+single_prompts: list[str] = [
     "a photo of a {}",
     "a rendering of a {}",
     "a cropped photo of the {}",
@@ -46,7 +46,7 @@ single_prompts = [
     "a photo of a small {}",
 ]
 
-group_prompts = [
+group_prompts: list[str] = [
     "a photo of a group of {}",
     "a rendering of a group of {}",
     "a cropped photo of the group of {}",

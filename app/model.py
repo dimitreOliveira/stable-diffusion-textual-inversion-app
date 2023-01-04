@@ -5,7 +5,10 @@ import tensorflow as tf
 from app.model_utils import traverse_layers
 
 
-def add_new_token(stable_diffusion, initializer_token):
+def add_new_token(
+    stable_diffusion: keras_cv.models.StableDiffusion, initializer_token: str
+) -> tuple[np.ndarray, np.ndarray]:
+    """Returns the weights of the position embedding and token embedding after adding a new token."""
     tokenized_initializer = stable_diffusion.tokenizer.encode(initializer_token)[1]
     new_weights = stable_diffusion.text_encoder.layers[2].token_embedding(
         tf.constant(tokenized_initializer)
@@ -26,8 +29,14 @@ def add_new_token(stable_diffusion, initializer_token):
 
 
 def build_text_encoder(
-    stable_diffusion, position_embedding_weights, token_embedding_weights
-):
+    stable_diffusion: keras_cv.models.StableDiffusion,
+    position_embedding_weights: np.ndarray,
+    token_embedding_weights: np.ndarray,
+) -> keras_cv.models.StableDiffusion:
+    """
+    Takes weights of the position embedding and token embedding
+    and builds a new text encoder for a StableDiffusion model.
+    """
     # Have to set download_weights False so we can init (otherwise tries to load weights)
     new_encoder = keras_cv.models.stable_diffusion.TextEncoder(
         keras_cv.models.stable_diffusion.stable_diffusion.MAX_PROMPT_LENGTH,
@@ -49,7 +58,10 @@ def build_text_encoder(
     return stable_diffusion
 
 
-def setup_model_for_training(stable_diffusion):
+def setup_model_for_training(
+    stable_diffusion: keras_cv.models.StableDiffusion,
+) -> keras_cv.models.StableDiffusion:
+    """Takes a StableDiffusion model and configures which layers will be trained or not."""
     stable_diffusion.diffusion_model.trainable = False
     stable_diffusion.decoder.trainable = False
     stable_diffusion.text_encoder.trainable = True

@@ -5,11 +5,12 @@ from app.model import build_text_encoder
 
 
 def save_finetuned_weights(
-    position_embedding,
-    token_embedding,
-    position_embedding_weights_path="./models/position_embedding_weights",
-    token_embedding_weights_path="./models/token_embedding_weights",
-):
+    position_embedding: np.ndarray,
+    token_embedding: np.ndarray,
+    position_embedding_weights_path: str = "./models/position_embedding_weights",
+    token_embedding_weights_path: str = "./models/token_embedding_weights",
+) -> None:
+    """Writes the weights for the  "position_embedding" and "token_embedding" as .npy files."""
     finetuned_position_weights = position_embedding.get_weights()
     finetuned_token_weights = token_embedding.get_weights()
     np.save(position_embedding_weights_path, finetuned_position_weights)
@@ -17,8 +18,14 @@ def save_finetuned_weights(
 
 
 def load_finetuned_weights(
-    position_embedding_weights_path, token_embedding_weights_path, placeholder_token
-):
+    position_embedding_weights_path: str,
+    token_embedding_weights_path: str,
+    placeholder_token: str,
+) -> keras_cv.models.StableDiffusion:
+    """
+    Reads the .npy files for the weights for the "position_embedding" and "token_embedding"
+    then uses them to re-build a StableDiffusion model.
+    """
     position_embedding_weights = np.load(position_embedding_weights_path)
     token_embedding_weights = np.load(token_embedding_weights_path)
 
