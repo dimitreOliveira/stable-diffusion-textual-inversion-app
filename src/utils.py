@@ -1,7 +1,7 @@
 import keras_cv
 import numpy as np
 
-from app.model import build_text_encoder
+from src.model import build_text_encoder
 
 
 def save_finetuned_weights(

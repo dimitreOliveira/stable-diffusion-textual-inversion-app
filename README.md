@@ -31,8 +31,6 @@ TODO list:
     - Training
     - Inference (notebook/app)
 - Custom TensorFlow signature to embed the image generation process
-- Gradio APP
-- StableDiffusionV2 support
 - YAML support
   - Parse parameter arguments form the .yaml file
 - Docker support

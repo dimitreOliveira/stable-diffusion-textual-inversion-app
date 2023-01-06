@@ -1,62 +1,49 @@
-import keras_cv
+import os
 
-from app.dataset import get_dataset, get_simple_dataset
-from app.model import (add_new_token, build_text_encoder,
-                       setup_model_for_training)
-from app.params import (EPOCHS, MAX_PROMPT_LENGTH, group_prompts, group_urls,
-                        initializer_token, output_folder, placeholder_token,
-                        single_prompts, single_urls)
-from app.training import (get_image_encoder, get_noise_scheduler, get_trainer,
-                          setup_trainer)
-from app.utils import save_finetuned_weights
+import gradio as gr
 
-stable_diffusion = keras_cv.models.StableDiffusion()
+from src.utils import load_finetuned_weights
 
-stable_diffusion.tokenizer.add_tokens(placeholder_token)
-
-single_ds = get_simple_dataset(
-    single_urls,
-    single_prompts,
-    placeholder_token,
-    stable_diffusion.tokenizer,
-    MAX_PROMPT_LENGTH,
+server_port = os.environ.get("SERVER_PORT", 7861)
+server_name = os.environ.get("SERVER_NAME", "0.0.0.0")
+prompt_token = os.environ.get("TOKEN", "<custom-token>")
+token_embedding_weights_path = os.environ.get(
+    "TOKEN_WEIGHTS", "./models/token_embedding_weights.npy"
+)
+position_embedding_weights_path = os.environ.get(
+    "POSITION_WEIGHTS", "./models/position_embedding_weights.npy"
 )
 
-group_ds = get_simple_dataset(
-    group_urls,
-    group_prompts,
-    placeholder_token,
-    stable_diffusion.tokenizer,
-    MAX_PROMPT_LENGTH,
+print(f'Inversed token used: "{prompt_token}"')
+print(f'Loading token embedding weights from: "{token_embedding_weights_path}"')
+print(f'Loading position embedding weights from: "{position_embedding_weights_path}"')
+stable_diffusion = load_finetuned_weights(
+    position_embedding_weights_path, token_embedding_weights_path, prompt_token
 )
 
-train_ds = get_dataset(single_ds, group_ds)
 
-old_position_weights, new_weights = add_new_token(stable_diffusion, initializer_token)
-stable_diffusion = build_text_encoder(
-    stable_diffusion, old_position_weights, new_weights
+def generate_fn(input_prompt: str):
+    generated = stable_diffusion.text_to_image(prompt=input_prompt, batch_size=1)
+    return generated[0]
+
+
+iface = gr.Interface(
+    fn=generate_fn,
+    title="Textual Inversion",
+    description=f"Textual Inversion Demo using {prompt_token} as the custom token",
+    article="Note: Keras-cv uses lazy intialization, so the first use will be slower, while the model is initialized.",
+    inputs=gr.Textbox(
+        label="Prompt",
+        show_label=False,
+        max_lines=2,
+        placeholder="Enter your prompt",
+        elem_id="input-prompt",
+    ),
+    outputs=gr.Image(),
 )
-stable_diffusion = setup_model_for_training(stable_diffusion)
 
-image_encoder = get_image_encoder(stable_diffusion)
-
-noise_scheduler = get_noise_scheduler()
-
-trainer = get_trainer(
-    stable_diffusion,
-    image_encoder,
-    noise_scheduler,
-    MAX_PROMPT_LENGTH,
-    placeholder_token,
-)
-
-trainer = setup_trainer(trainer, train_ds, EPOCHS)
-
-trainer.fit(train_ds, epochs=EPOCHS)
-
-save_finetuned_weights(
-    stable_diffusion.text_encoder.layers[2].token_embedding,
-    stable_diffusion.text_encoder.layers[2].position_embedding,
-    position_embedding_weights_path=f"./models/{output_folder}/position_embedding_weights",
-    token_embedding_weights_path=f"./models/{output_folder}/token_embedding_weights",
-)
+if __name__ == "__main__":
+    app, local_url, share_url = iface.launch(
+        server_port=server_port,
+        server_name=server_name,
+    )

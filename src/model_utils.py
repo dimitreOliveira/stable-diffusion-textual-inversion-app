@@ -1,7 +1,7 @@
 import math
 
 import tensorflow as tf
-from keras_cv.clip_tokenizer import SimpleTokenizer
+from keras_cv.models.stable_diffusion.clip_tokenizer import SimpleTokenizer
 
 
 def pad_embedding(

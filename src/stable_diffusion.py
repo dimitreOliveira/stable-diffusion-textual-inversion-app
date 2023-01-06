@@ -1,8 +1,11 @@
 import keras_cv
 import tensorflow as tf
 
-from app.model_utils import (get_position_ids, get_timestep_embedding,
-                             sample_from_encoder_outputs)
+from src.model_utils import (
+    get_position_ids,
+    get_timestep_embedding,
+    sample_from_encoder_outputs,
+)
 
 
 class StableDiffusionFineTuner(tf.keras.Model):
