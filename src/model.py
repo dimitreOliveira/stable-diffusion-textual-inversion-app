@@ -64,15 +64,18 @@ def setup_model_for_training(
     """Takes a StableDiffusion model and configures which layers will be trained or not."""
     stable_diffusion.diffusion_model.trainable = False
     stable_diffusion.decoder.trainable = False
-    stable_diffusion.text_encoder.trainable = True
-    stable_diffusion.text_encoder.layers[2].trainable = True
+    # stable_diffusion.text_encoder.trainable = True
+    # stable_diffusion.text_encoder.layers[2].trainable = True
+    stable_diffusion.text_encoder.trainable = False
+    stable_diffusion.text_encoder.layers[2].trainable = False
 
     for layer in traverse_layers(stable_diffusion.text_encoder):
         if (
             isinstance(layer, tf.keras.layers.Embedding)
             or "clip_embedding" in layer.name
         ):
-            layer.trainable = True
+            # layer.trainable = True
+            layer.trainable = False
         else:
             layer.trainable = False
 

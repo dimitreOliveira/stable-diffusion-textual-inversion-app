@@ -2,16 +2,11 @@
 
 ![](https://i.imgur.com/KqEeBsM.jpg)
 
-This code was heavily inpired by the [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/) Keras code example from Luke Wood.
+This code was heavily inspired by the [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/) Keras code example from Luke Wood.
 
 TODO list:
 
 - Makefile commands
-  - Linting
-  - Formatter
-  - Run app
-  - Start Jupyter Lab instance
-  - Create images
   - Tests
 - Improve docstrings
 - Tests
@@ -31,6 +26,7 @@ TODO list:
     - Training
     - Inference (notebook/app)
 - Custom TensorFlow signature to embed the image generation process
+- TFRecord support
 - YAML support
   - Parse parameter arguments form the .yaml file
 - Docker support

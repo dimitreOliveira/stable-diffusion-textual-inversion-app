@@ -30,8 +30,8 @@ def generate_fn(input_prompt: str):
 iface = gr.Interface(
     fn=generate_fn,
     title="Textual Inversion",
-    description=f"Textual Inversion Demo using {prompt_token} as the custom token",
-    article="Note: Keras-cv uses lazy intialization, so the first use will be slower, while the model is initialized.",
+    description="Textual Inversion Demo",
+    article="Note: Keras-cv uses lazy intialization, so the first use will be slower while the model is initialized.",
     inputs=gr.Textbox(
         label="Prompt",
         show_label=False,
