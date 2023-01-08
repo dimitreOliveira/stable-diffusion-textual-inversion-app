@@ -1,4 +1,3 @@
-# from .context.src import parser
 from src.parser import DatasetParams, ModelParams, Params, TrainParams
 
 PARAMS_PATH = "tests/assets/params_test.yaml"

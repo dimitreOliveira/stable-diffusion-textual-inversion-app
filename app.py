@@ -1,9 +1,11 @@
 import os
+form logging import getLogger
 
 import gradio as gr
 
 from src.utils import load_finetuned_weights
 
+logger = getLogger()
 server_port = os.environ.get("SERVER_PORT", 7861)
 server_name = os.environ.get("SERVER_NAME", "0.0.0.0")
 prompt_token = os.environ.get("TOKEN", "<custom-token>")
@@ -14,9 +16,10 @@ position_embedding_weights_path = os.environ.get(
     "POSITION_WEIGHTS", "./models/position_embedding_weights.npy"
 )
 
-print(f'Inversed token used: "{prompt_token}"')
-print(f'Loading token embedding weights from: "{token_embedding_weights_path}"')
-print(f'Loading position embedding weights from: "{position_embedding_weights_path}"')
+
+logger.info(f'Inversed token used: "{prompt_token}"')
+logger.info(f'Loading token embedding weights from: "{token_embedding_weights_path}"')
+logger.info(f'Loading position embedding weights from: "{position_embedding_weights_path}"')
 stable_diffusion = load_finetuned_weights(
     position_embedding_weights_path, token_embedding_weights_path, prompt_token
 )
