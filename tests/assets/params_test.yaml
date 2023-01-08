@@ -1,0 +1,29 @@
+model:
+  models_dir: "models/example"
+  token: "<token>"
+  initializer_token: "cat"
+  max_prompt_length: 77
+
+train:
+  epochs: 1
+
+dataset:
+  group_datasets_dir: "datasets/group/"
+  single_datasets_dir: "datasets/single/"
+  single_urls: [
+    "https://i.imgur.com/VIedH1X.jpg",
+    "https://i.imgur.com/eBw13hE.png",
+  ]
+  group_urls: [
+    "https://i.imgur.com/yVmZ2Qa.jpg",
+    "https://i.imgur.com/JbyFbZJ.jpg",
+  ]
+  single_prompts: [
+    "a photo of a {}",
+    "a rendering of a {}",
+  ]
+
+  group_prompts: [
+    "a photo of a group of {}",
+    "a rendering of a group of {}",
+  ]

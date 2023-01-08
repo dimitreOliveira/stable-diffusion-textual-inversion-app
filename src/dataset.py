@@ -86,9 +86,7 @@ def assemble_dataset(
     # TODO: maybe it would be more efficient to combine all images with all prompts to have more diversity?
     """Combines the image and text datasets into an unified TensorFlow dataset."""
     image_dataset = assemble_image_dataset(dataset_dir)
-    text_dataset = assemble_text_dataset(
-        prompts, token, tokenizer, max_prompt_length
-    )
+    text_dataset = assemble_text_dataset(prompts, token, tokenizer, max_prompt_length)
     # the image dataset is quite short, so we repeat it to match the length of the text prompt dataset
     image_dataset = image_dataset.repeat()
     # We use the text prompt dataset to determine the length of the dataset.

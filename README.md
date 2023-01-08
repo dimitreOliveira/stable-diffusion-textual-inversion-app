@@ -6,10 +6,8 @@ This code was heavily inspired by the [Teach StableDiffusion new concepts via Te
 
 TODO list:
 
-- Makefile commands
-  - Tests
 - Improve docstrings
-- Tests
+- Improve Tests
 - Git pipeline hooks
   - Linting
   - Formatter
