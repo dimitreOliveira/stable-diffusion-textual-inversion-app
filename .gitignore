@@ -45,6 +45,9 @@ venv.bak/
 # Linter
 .flake8
 
+# Data files
+datasets/
+
 # Model weights
 models/
 *.npy

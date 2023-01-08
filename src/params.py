@@ -1,8 +1,10 @@
 EPOCHS: int = 1  # 50
 MAX_PROMPT_LENGTH: int = 77
-placeholder_token: str = "<custom-token>"
+token: str = "<token>"
 initializer_token: str = "cat"
-output_folder: str = "example"
+group_datasets_dir: str = "datasets/group/"
+single_datasets_dir: str = "datasets/single/"
+models_dir: str = "models/example"
 
 single_urls: list[str] = [
     "https://i.imgur.com/VIedH1X.jpg",

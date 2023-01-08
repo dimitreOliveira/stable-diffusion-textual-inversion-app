@@ -1,3 +1,4 @@
+import os
 import keras_cv
 import numpy as np
 
@@ -7,14 +8,16 @@ from src.model import build_text_encoder
 def save_finetuned_weights(
     position_embedding: np.ndarray,
     token_embedding: np.ndarray,
-    position_embedding_weights_path: str = "./models/position_embedding_weights",
-    token_embedding_weights_path: str = "./models/token_embedding_weights",
+    models_dir: str = "./models",
 ) -> None:
     """Writes the weights for the  "position_embedding" and "token_embedding" as .npy files."""
     finetuned_position_weights = position_embedding.get_weights()
     finetuned_token_weights = token_embedding.get_weights()
-    np.save(position_embedding_weights_path, finetuned_position_weights)
-    np.save(token_embedding_weights_path, finetuned_token_weights)
+
+    if not os.path.exists(models_dir):
+        os.makedirs(models_dir)
+    np.save(f"{models_dir}/position_embedding_weights", finetuned_position_weights)
+    np.save(f"{models_dir}/token_embedding_weights", finetuned_token_weights)
 
 
 def load_finetuned_weights(

@@ -1,7 +1,7 @@
 import keras_cv
 import tensorflow as tf
 
-from src.stable_diffusion import StableDiffusionFineTuner
+from src.finetuner import StableDiffusionFineTuner
 
 
 def get_image_encoder(
