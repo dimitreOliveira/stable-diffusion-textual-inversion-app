@@ -23,8 +23,7 @@ TODO list:
     - Inference (notebook/app)
 - Custom TensorFlow signature to embed the image generation process
 - TFRecord support
-- YAML support
-  - Parse parameter arguments form the .yaml file
+- Replace prints by Loggers
 - Docker support
 - Docker-compose support
 - TF Serving support

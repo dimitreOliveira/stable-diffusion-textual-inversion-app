@@ -1,4 +1,6 @@
 numpy
+pyyaml
+pydantic
 keras-cv==0.4
 tensorflow-datasets
 tensorflow-macos==2.11.0

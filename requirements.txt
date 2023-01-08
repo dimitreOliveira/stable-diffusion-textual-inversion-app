@@ -1,4 +1,6 @@
 numpy
+pyyaml
+pydantic
 jupyterlab
 keras-cv==0.4
 tensorflow==2.11.0

@@ -1,26 +1,28 @@
-EPOCHS: int = 1  # 50
-MAX_PROMPT_LENGTH: int = 77
-token: str = "<token>"
-initializer_token: str = "cat"
-group_datasets_dir: str = "datasets/group/"
-single_datasets_dir: str = "datasets/single/"
-models_dir: str = "models/example"
+model:
+  models_dir: "models/example"
+  token: "<token>"
+  initializer_token: "cat"
+  max_prompt_length: 77
 
-single_urls: list[str] = [
+train:
+  epochs: 1
+
+dataset:
+  group_datasets_dir: "datasets/group/"
+  single_datasets_dir: "datasets/single/"
+  single_urls: [
     "https://i.imgur.com/VIedH1X.jpg",
     "https://i.imgur.com/eBw13hE.png",
     "https://i.imgur.com/oJ3rSg7.png",
     "https://i.imgur.com/5mCL6Df.jpg",
     "https://i.imgur.com/4Q6WWyI.jpg",
-]
-
-group_urls: list[str] = [
+  ]
+  group_urls: [
     "https://i.imgur.com/yVmZ2Qa.jpg",
     "https://i.imgur.com/JbyFbZJ.jpg",
     "https://i.imgur.com/CCubd3q.jpg",
-]
-
-single_prompts: list[str] = [
+  ]
+  single_prompts: [
     "a photo of a {}",
     "a rendering of a {}",
     "a cropped photo of the {}",
@@ -46,9 +48,9 @@ single_prompts: list[str] = [
     "a photo of the large {}",
     "a photo of a cool {}",
     "a photo of a small {}",
-]
+  ]
 
-group_prompts: list[str] = [
+  group_prompts: [
     "a photo of a group of {}",
     "a rendering of a group of {}",
     "a cropped photo of the group of {}",
@@ -74,4 +76,4 @@ group_prompts: list[str] = [
     "a photo of the large group of {}",
     "a photo of a cool group of {}",
     "a photo of a small group of {}",
-]
+  ]
