@@ -1,27 +1,28 @@
 import yaml
+from typing import Optional
 from pydantic import BaseModel, dataclasses
 
 
 class ModelParams(BaseModel):
-    models_dir: str
-    models_version: int
-    token: str
+    models_dir: str = "models"
+    models_version: int = 1
+    token: str = "<token>"
     initializer_token: str
-    max_prompt_length: int
-    export: str
+    max_prompt_length: int = 77
+    export: str = "True"
 
 
 class TrainParams(BaseModel):
-    epochs: int
+    epochs: int = 1
 
 
 class DatasetParams(BaseModel):
-    group_datasets_dir: str
-    single_datasets_dir: str
-    single_prompts: list[str]
-    group_prompts: list[str]
-    single_urls: list[str]
-    group_urls: list[str]
+    group_datasets_dir: str = "datasets/group/"
+    single_datasets_dir: str = "datasets/single/"
+    single_prompts: Optional[list[str]] = None
+    group_prompts: Optional[list[str]] = None
+    single_urls: Optional[list[str]] = []
+    group_urls: Optional[list[str]] = []
 
 
 @dataclasses.dataclass

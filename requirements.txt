@@ -1,8 +1,9 @@
 numpy
 gradio
 pyyaml
+requests
 pydantic
-# jupyterlab
-tensorflow==2.11.0
-tensorflow-datasets
+jupyterlab
 keras-cv==0.4.1
+tensorflow-datasets
+tensorflow==2.11.0

@@ -43,9 +43,9 @@ Starts the JupyterLab instance.
 
 
 # References
-- Keras-io blog [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/)
-- Various ways of serving Stable Diffusion [keras-sd-serving](https://github.com/deep-diver/keras-sd-serving)
-- [An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion](https://textual-inversion.github.io/)
+- Keras.io blog [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/)
+- Various ways of serving Stable Diffusion [keras-sd-serving](https://github.com/deep-diver/keras-sd-serving), Courtesy of my colleagues Chansung and Sayak.
+- Paper [An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion](https://textual-inversion.github.io/)
 
 TODO list:
 

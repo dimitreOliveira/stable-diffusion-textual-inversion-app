@@ -38,7 +38,7 @@ stable_diffusion.tokenizer.add_tokens(modelParams.token)
 # Initialize with empty dataset
 train_ds = tf.data.Dataset.from_tensor_slices([])
 
-if os.path.exists(datasetParams.single_datasets_dir) and os.listdir(
+if datasetParams.single_prompts and os.path.exists(datasetParams.single_datasets_dir) and os.listdir(
     datasetParams.single_datasets_dir
 ):
     train_ds = assemble_dataset(
@@ -49,7 +49,7 @@ if os.path.exists(datasetParams.single_datasets_dir) and os.listdir(
         modelParams.max_prompt_length,
     )
 
-if os.path.exists(datasetParams.group_datasets_dir) and os.listdir(
+if datasetParams.group_prompts and os.path.exists(datasetParams.group_datasets_dir) and os.listdir(
     datasetParams.group_datasets_dir
 ):
     if train_ds.cardinality().numpy() > 0:
@@ -111,17 +111,14 @@ trainer = get_trainer(
 
 trainer = setup_trainer(trainer, train_ds, trainParams.epochs)
 
-trainer.fit(train_ds, epochs=trainParams.epochs)
+# trainer.fit(train_ds, epochs=trainParams.epochs)
+
+# For textual-inversion we only need the text encoder
+output_path = f"{modelParams.models_dir}/text_encoder/keras"
+logger.info(f'Saving text encoder to: "{output_path}"')
+stable_diffusion.text_encoder.save(output_path)
 
 if modelParams.export == "True":
     export_stable_diffusion(
         stable_diffusion, modelParams.models_dir, modelParams.models_version
-    )
-else:
-    # If the models won't be exported for serving, we only need the text encoder
-    output_path = f"{modelParams.models_dir}/text_encoder/{modelParams.models_version}/"
-    logger.info(f'Saving text encoder to: "{output_path}"')
-    tf.saved_model.save(
-        stable_diffusion.text_encoder,
-        output_path,
     )
