@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-import tensorflow_datasets as tfds
 from keras_cv import layers as cv_layers
 from keras_cv.models.stable_diffusion.clip_tokenizer import SimpleTokenizer
 

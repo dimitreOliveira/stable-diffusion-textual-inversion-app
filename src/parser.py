@@ -4,9 +4,11 @@ from pydantic import BaseModel, dataclasses
 
 class ModelParams(BaseModel):
     models_dir: str
+    models_version: int
     token: str
     initializer_token: str
     max_prompt_length: int
+    export: str
 
 
 class TrainParams(BaseModel):

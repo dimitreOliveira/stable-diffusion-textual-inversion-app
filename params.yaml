@@ -1,8 +1,10 @@
 model:
   models_dir: "models/example"
+  models_version: 1
   token: "<token>"
   initializer_token: "cat"
   max_prompt_length: 77
+  export: "True"
 
 train:
   epochs: 1

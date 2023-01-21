@@ -1,9 +1,11 @@
+import logging
 import os
 
 import keras_cv
 import tensorflow as tf
 
 from src.dataset import assemble_dataset, get_images_from_urls
+from src.exporter import export_stable_diffusion
 from src.model import add_new_token, build_text_encoder, setup_model_for_training
 from src.parser import DatasetParams, ModelParams, Params, TrainParams
 from src.trainer import (
@@ -12,8 +14,9 @@ from src.trainer import (
     get_trainer,
     setup_trainer,
 )
-from src.utils import save_finetuned_weights
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("Train")
 params = Params("./params.yaml")
 modelParams: ModelParams = params.model
 trainParams: TrainParams = params.train
@@ -110,8 +113,15 @@ trainer = setup_trainer(trainer, train_ds, trainParams.epochs)
 
 trainer.fit(train_ds, epochs=trainParams.epochs)
 
-save_finetuned_weights(
-    stable_diffusion.text_encoder.layers[2].position_embedding,
-    stable_diffusion.text_encoder.layers[2].token_embedding,
-    datasetParams.models_dir,
-)
+if modelParams.export == "True":
+    export_stable_diffusion(
+        stable_diffusion, modelParams.models_dir, modelParams.models_version
+    )
+else:
+    # If the models won't be exported for serving, we only need the text encoder
+    output_path = f"{modelParams.models_dir}/text_encoder/{modelParams.models_version}/"
+    logger.info(f'Saving text encoder to: "{output_path}"')
+    tf.saved_model.save(
+        stable_diffusion.text_encoder,
+        output_path,
+    )
