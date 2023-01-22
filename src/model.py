@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import keras_cv
 import numpy as np
 import tensorflow as tf
@@ -7,7 +9,7 @@ from src.model_utils import traverse_layers
 
 def add_new_token(
     stable_diffusion: keras_cv.models.StableDiffusion, initializer_token: str
-) -> tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """Returns the weights of the position embedding and token embedding after adding a new token."""
     tokenized_initializer = stable_diffusion.tokenizer.encode(initializer_token)[1]
     new_weights = stable_diffusion.text_encoder.layers[2].token_embedding(
