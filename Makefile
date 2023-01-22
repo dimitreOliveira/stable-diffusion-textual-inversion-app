@@ -1,6 +1,6 @@
 lint:
-	sudo isort ./
-	sudo black ./
+	isort ./
+	black ./
 
 test:
 	pytest tests
