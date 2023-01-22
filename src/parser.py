@@ -1,5 +1,6 @@
+from typing import List, Optional
+
 import yaml
-from typing import Optional
 from pydantic import BaseModel, dataclasses
 
 
@@ -19,10 +20,10 @@ class TrainParams(BaseModel):
 class DatasetParams(BaseModel):
     group_datasets_dir: str = "datasets/group/"
     single_datasets_dir: str = "datasets/single/"
-    single_prompts: Optional[list[str]] = None
-    group_prompts: Optional[list[str]] = None
-    single_urls: Optional[list[str]] = []
-    group_urls: Optional[list[str]] = []
+    single_prompts: Optional[List[str]] = None
+    group_prompts: Optional[List[str]] = None
+    single_urls: Optional[List[str]] = []
+    group_urls: Optional[List[str]] = []
 
 
 @dataclasses.dataclass

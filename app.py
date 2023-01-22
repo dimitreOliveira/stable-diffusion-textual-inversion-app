@@ -1,10 +1,9 @@
 import logging
 import os
 
-import keras_cv
 import gradio as gr
+import keras_cv
 import tensorflow as tf
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("App")

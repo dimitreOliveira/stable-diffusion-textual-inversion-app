@@ -124,6 +124,7 @@ def diffusion_model_exporter(model: tf.keras.Model):
 
 def decoder_exporter(model: tf.keras.Model):
     """Exports the decoder module from the StableDiffusion model to be served by TFServing."""
+
     @tf.function(
         input_signature=[
             {

@@ -62,6 +62,7 @@ TODO list:
   - Linting
   - Formatter
   - Tests
+- Add `setup.py` file
 - TFRecord support
 - Docker support
 - Docker-compose support

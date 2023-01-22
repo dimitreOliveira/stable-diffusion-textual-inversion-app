@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 import tensorflow as tf
 from keras_cv import layers as cv_layers
@@ -7,7 +9,7 @@ from src.model_utils import pad_embedding
 
 
 def get_images_from_urls(
-    urls: list[str], output_dir: str = ".", output_subdir: str = "datasets"
+    urls: List[str], output_dir: str = ".", output_subdir: str = "datasets"
 ) -> None:
     """Downloads all images from the given URLs and save them to a folder."""
     for url in urls:
@@ -60,7 +62,7 @@ def assemble_image_dataset(dataset_dir: str) -> tf.data.Dataset:
 
 
 def assemble_text_dataset(
-    prompts: list[str], token, tokenizer, max_prompt_length
+    prompts: List[str], token, tokenizer, max_prompt_length
 ) -> tf.data.Dataset:
     """Tokenize and pad all prompts and creates a TensorFlow dataset."""
     prompts = [prompt.format(token) for prompt in prompts]
@@ -77,7 +79,7 @@ def assemble_text_dataset(
 
 def assemble_dataset(
     dataset_dir: str,
-    prompts: list[str],
+    prompts: List[str],
     token: str,
     tokenizer: SimpleTokenizer,
     max_prompt_length: int,
