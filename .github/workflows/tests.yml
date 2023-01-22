@@ -25,6 +25,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
+      - name: Test 2
+        run: pytest tests
       - name: Lint
         run: make lint
       - name: Test

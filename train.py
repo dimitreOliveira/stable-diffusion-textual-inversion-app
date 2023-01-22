@@ -111,7 +111,7 @@ trainer = get_trainer(
 
 trainer = setup_trainer(trainer, train_ds, trainParams.epochs)
 
-# trainer.fit(train_ds, epochs=trainParams.epochs)
+trainer.fit(train_ds, epochs=trainParams.epochs)
 
 # For textual-inversion we only need the text encoder
 output_path = f"{modelParams.models_dir}/text_encoder/keras"
