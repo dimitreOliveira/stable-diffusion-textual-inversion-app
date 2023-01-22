@@ -38,8 +38,10 @@ stable_diffusion.tokenizer.add_tokens(modelParams.token)
 # Initialize with empty dataset
 train_ds = tf.data.Dataset.from_tensor_slices([])
 
-if datasetParams.single_prompts and os.path.exists(datasetParams.single_datasets_dir) and os.listdir(
-    datasetParams.single_datasets_dir
+if (
+    datasetParams.single_prompts
+    and os.path.exists(datasetParams.single_datasets_dir)
+    and os.listdir(datasetParams.single_datasets_dir)
 ):
     train_ds = assemble_dataset(
         datasetParams.single_datasets_dir,
@@ -49,8 +51,10 @@ if datasetParams.single_prompts and os.path.exists(datasetParams.single_datasets
         modelParams.max_prompt_length,
     )
 
-if datasetParams.group_prompts and os.path.exists(datasetParams.group_datasets_dir) and os.listdir(
-    datasetParams.group_datasets_dir
+if (
+    datasetParams.group_prompts
+    and os.path.exists(datasetParams.group_datasets_dir)
+    and os.listdir(datasetParams.group_datasets_dir)
 ):
     if train_ds.cardinality().numpy() > 0:
         group_ds = assemble_dataset(
