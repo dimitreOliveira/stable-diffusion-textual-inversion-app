@@ -58,10 +58,6 @@ TODO list:
 
 - Improve docstrings
 - Improve Tests
-- Git pipeline hooks
-  - Linting
-  - Formatter
-  - Tests
 - Add `setup.py` file
 - TFRecord support
 - Docker support

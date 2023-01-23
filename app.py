@@ -3,13 +3,14 @@ import os
 
 import gradio as gr
 import keras_cv
+import numpy as np
 import tensorflow as tf
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("App")
 server_port = os.environ.get("SERVER_PORT", 7861)
 server_name = os.environ.get("SERVER_NAME", "0.0.0.0")
-prompt_token = os.environ.get("TOKEN", "<custom-token>")
+prompt_token = os.environ.get("TOKEN", "<token>")
 text_encoder_path = os.environ.get(
     "TEXT_ENCODER", "./models/example/text_encoder/keras"
 )
@@ -18,14 +19,14 @@ logger.info(f'Inversed token used: "{prompt_token}"')
 logger.info(f'Loading text encoder from: "{text_encoder_path}"')
 
 stable_diffusion = keras_cv.models.StableDiffusion()
-stable_diffusion.tokenizer.add_tokens("<token>")
+stable_diffusion.tokenizer.add_tokens(prompt_token)
 
 loaded_text_encoder_ = tf.keras.models.load_model(text_encoder_path)
 stable_diffusion._text_encoder = loaded_text_encoder_
 stable_diffusion._text_encoder.compile(jit_compile=True)
 
 
-def generate_fn(input_prompt: str):
+def generate_fn(input_prompt: str) -> np.ndarray:
     generated = stable_diffusion.text_to_image(prompt=input_prompt, batch_size=1)
     return generated[0]
 

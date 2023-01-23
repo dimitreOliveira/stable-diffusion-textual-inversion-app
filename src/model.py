@@ -4,7 +4,7 @@ import keras_cv
 import numpy as np
 import tensorflow as tf
 
-from src.model_utils import traverse_layers
+from src.utils import traverse_layers
 
 
 def add_new_token(

@@ -1,41 +1,49 @@
-# import os
+import math
 
-# import keras_cv
-# import numpy as np
-
-# from src.model import build_text_encoder
+import tensorflow as tf
+from keras_cv.models.stable_diffusion.clip_tokenizer import SimpleTokenizer
 
 
-# def save_finetuned_weights(
-#     position_embedding: np.ndarray,
-#     token_embedding: np.ndarray,
-#     models_dir: str = "./models",
-# ) -> None:
-#     """Writes the weights for the  "position_embedding" and "token_embedding" as .npy files."""
-#     finetuned_position_weights = position_embedding.get_weights()
-#     finetuned_token_weights = token_embedding.get_weights()
-
-#     if not os.path.exists(models_dir):
-#         os.makedirs(models_dir)
-#     np.save(f"{models_dir}/position_embedding_weights", finetuned_position_weights)
-#     np.save(f"{models_dir}/token_embedding_weights", finetuned_token_weights)
+def pad_embedding(
+    embedding: tf.Tensor, tokenizer: SimpleTokenizer, max_prompt_length: int
+) -> tf.Tensor:
+    """Pads a tokenized text to match the desired length."""
+    return embedding + ([tokenizer.end_of_text] * (max_prompt_length - len(embedding)))
 
 
-# def load_finetuned_weights(
-#     position_embedding_weights_path: str,
-#     token_embedding_weights_path: str,
-#     placeholder_token: str,
-# ) -> keras_cv.models.StableDiffusion:
-#     """
-#     Reads the .npy files for the weights for the "position_embedding" and "token_embedding"
-#     then uses them to re-build a StableDiffusion model.
-#     """
-#     position_embedding_weights = np.load(position_embedding_weights_path)
-#     token_embedding_weights = np.load(token_embedding_weights_path)
+def sample_from_encoder_outputs(outputs: tf.Tensor) -> tf.Tensor:
+    """Get samples from the image encoder output."""
+    mean, logvar = tf.split(outputs, 2, axis=-1)
+    logvar = tf.clip_by_value(logvar, -30.0, 20.0)
+    std = tf.exp(0.5 * logvar)
+    sample = tf.random.normal(tf.shape(mean))
+    return mean + std * sample
 
-#     stable_diffusion = keras_cv.models.StableDiffusion()
-#     stable_diffusion.tokenizer.add_tokens(placeholder_token)
-#     stable_diffusion = build_text_encoder(
-#         stable_diffusion, position_embedding_weights, token_embedding_weights
-#     )
-#     return stable_diffusion
+
+def get_timestep_embedding(
+    timestep: int, dim: int = 320, max_period: int = 10000
+) -> tf.Tensor:
+    """Get the embedding from a timestep value."""
+    half = dim // 2
+    freqs = tf.math.exp(
+        -math.log(max_period) * tf.range(0, half, dtype=tf.float32) / half
+    )
+    args = tf.convert_to_tensor([timestep], dtype=tf.float32) * freqs
+    embedding = tf.concat([tf.math.cos(args), tf.math.sin(args)], 0)
+    return embedding
+
+
+def get_position_ids(max_prompt_length: int) -> tf.Tensor:
+    """Get the position ID for a value."""
+    return tf.convert_to_tensor([list(range(max_prompt_length))], dtype=tf.int32)
+
+
+def traverse_layers(layer: tf.keras.layers.Layer) -> tf.keras.layers.Layer:
+    """Utility to iterate over layers."""
+    if hasattr(layer, "layers"):
+        for layer in layer.layers:
+            yield layer
+    if hasattr(layer, "token_embedding"):
+        yield layer.token_embedding
+    if hasattr(layer, "position_embedding"):
+        yield layer.position_embedding
