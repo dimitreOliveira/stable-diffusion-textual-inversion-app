@@ -1,36 +1,95 @@
+import json
 import logging
 import os
+from typing import List
 
 import gradio as gr
-
-from src.utils import load_finetuned_weights
+import numpy as np
+import requests
+from keras_cv.models.stable_diffusion.clip_tokenizer import SimpleTokenizer
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("App")
+
 server_port = os.environ.get("SERVER_PORT", 7861)
 server_name = os.environ.get("SERVER_NAME", "0.0.0.0")
-prompt_token = os.environ.get("TOKEN", "<custom-token>")
-token_embedding_weights_path = os.environ.get(
-    "TOKEN_WEIGHTS", "./models/token_embedding_weights.npy"
+prompt_token = os.environ.get("TOKEN", "<token>")
+text_encoder_url = os.environ.get(
+    "TEXT_ENCODER_URL", "http://localhost:8501/v1/models/text_encoder:predict"
 )
-position_embedding_weights_path = os.environ.get(
-    "POSITION_WEIGHTS", "./models/position_embedding_weights.npy"
+diffusion_model_url = os.environ.get(
+    "DIFFUSION_MODEL_URL", "http://localhost:8501/v1/models/diffusion_model:predict"
+)
+decoder_url = os.environ.get(
+    "DECODER_URL", "http://localhost:8501/v1/models/decoder:predict"
 )
 
+max_prompt_length = int(os.environ.get("MAX_PROMPT_LENGTH", 77))
+padding_token = int(os.environ.get("PADDING_TOKEN", 49407))
+batch_size = int(os.environ.get("BATCH_SIZE", 1))
+num_steps = int(os.environ.get("NUM_STEPS", 1))
+
+tokenizer = SimpleTokenizer()
+tokenizer.add_tokens(prompt_token)
 
 logger.info(f'Inversed token used: "{prompt_token}"')
-logger.info(f'Loading token embedding weights from: "{token_embedding_weights_path}"')
-logger.info(
-    f'Loading position embedding weights from: "{position_embedding_weights_path}"'
-)
-stable_diffusion = load_finetuned_weights(
-    position_embedding_weights_path, token_embedding_weights_path, prompt_token
-)
 
 
-def generate_fn(input_prompt: str):
-    generated = stable_diffusion.text_to_image(prompt=input_prompt, batch_size=1)
-    return generated[0]
+def predict_rest(json_data: str, url: str) -> np.ndarray:
+    json_response = requests.post(url, data=json_data)
+    response = json.loads(json_response.text)
+    rest_outputs = np.array(response["predictions"])
+    return rest_outputs
+
+
+def text_encoder_fn(input_prompt: str) -> np.ndarray:
+    tokens = tokenizer.encode(input_prompt)
+    tokens = tokens + [padding_token] * (max_prompt_length - len(tokens))
+
+    json_tokens = json.dumps(
+        {
+            "signature_name": "serving_default",
+            "instances": [{"tokens": tokens, "batch_size": batch_size}],
+        }
+    )
+    encoded_text = predict_rest(json_tokens, text_encoder_url)
+    return encoded_text
+
+
+def diffusion_model_fn(encoded_text: List[dict]) -> np.ndarray:
+    json_encoded_text = json.dumps(
+        {
+            "signature_name": "serving_default",
+            "instances": [
+                {
+                    "context": encoded_text[0]["context"],
+                    "unconditional_context": encoded_text[0]["unconditional_context"],
+                    # "num_steps": num_steps,
+                    # "batch_size": batch_size,
+                }
+            ],
+        }
+    )
+    latents = predict_rest(json_encoded_text, diffusion_model_url)
+    return latents
+
+
+def decoder_fn(latents: List[np.ndarray]) -> np.ndarray:
+    json_latents = json.dumps(
+        {
+            "signature_name": "serving_default",
+            "instances": [{"latent": latents[0].tolist()}],
+        }
+    )
+    decoded_images = predict_rest(json_latents, decoder_url)
+    return decoded_images
+
+
+def generate_fn(input_prompt: str) -> np.ndarray:
+    encoded_text = text_encoder_fn(input_prompt)
+    latents = diffusion_model_fn(encoded_text)
+    decoded_images = decoder_fn(latents)
+    return decoded_images
 
 
 iface = gr.Interface(

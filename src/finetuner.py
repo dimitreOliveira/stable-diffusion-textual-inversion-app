@@ -1,7 +1,7 @@
 import keras_cv
 import tensorflow as tf
 
-from src.model_utils import (
+from src.utils import (
     get_position_ids,
     get_timestep_embedding,
     sample_from_encoder_outputs,

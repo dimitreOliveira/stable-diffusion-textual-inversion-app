@@ -51,7 +51,6 @@ dataset:
     "a photo of a cool {}",
     "a photo of a small {}",
   ]
-
   group_prompts: [
     "a photo of a group of {}",
     "a rendering of a group of {}",

@@ -5,7 +5,7 @@ import tensorflow as tf
 from keras_cv import layers as cv_layers
 from keras_cv.models.stable_diffusion.clip_tokenizer import SimpleTokenizer
 
-from src.model_utils import pad_embedding
+from src.utils import pad_embedding
 
 
 def get_images_from_urls(

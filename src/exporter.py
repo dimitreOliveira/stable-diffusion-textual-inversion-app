@@ -1,4 +1,5 @@
 import logging
+from typing import Callable
 
 import keras_cv
 import tensorflow as tf
@@ -11,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Exporter")
 
 
-def text_encoder_exporter(model: tf.keras.Model):
+def text_encoder_exporter(model: tf.keras.Model) -> Callable:
     """Exports the text encoder module from the StableDiffusion model to be served by TFServing."""
     MAX_PROMPT_LENGTH = 77
     POS_IDS = tf.convert_to_tensor([list(range(MAX_PROMPT_LENGTH))], dtype=tf.int32)
@@ -47,7 +48,7 @@ def text_encoder_exporter(model: tf.keras.Model):
     return serving_fn
 
 
-def diffusion_model_exporter(model: tf.keras.Model):
+def diffusion_model_exporter(model: tf.keras.Model) -> Callable:
     """Exports the diffusion model module from the StableDiffusion model to be served by TFServing."""
     IMG_HEIGHT = 512
     IMG_WIDTH = 512
@@ -122,7 +123,7 @@ def diffusion_model_exporter(model: tf.keras.Model):
     return serving_fn
 
 
-def decoder_exporter(model: tf.keras.Model):
+def decoder_exporter(model: tf.keras.Model) -> Callable:
     """Exports the decoder module from the StableDiffusion model to be served by TFServing."""
 
     @tf.function(
@@ -149,7 +150,7 @@ def export_stable_diffusion(
     stable_diffusion: keras_cv.models.StableDiffusion,
     models_dir: str,
     models_version: int = 1,
-):
+) -> None:
     """Exports the StableDiffusion model's inner mudules to be served by TFServing."""
     text_encoder_output_path = f"{models_dir}/text_encoder/{models_version}/"
     diffusion_model_output_path = f"{models_dir}/diffusion_model/{models_version}/"
