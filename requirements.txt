@@ -3,7 +3,6 @@ gradio
 pyyaml
 requests
 pydantic
-jupyterlab
-keras-cv==0.4.1
+keras-cv==0.4.2
 tensorflow-datasets
 tensorflow==2.11.0
