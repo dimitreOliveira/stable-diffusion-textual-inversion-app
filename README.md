@@ -41,6 +41,27 @@ make jupyter
 ```
 Starts the JupyterLab instance.
 
+## Docker
+
+**Build container**
+```bash
+docker build -t textual-inversion-app . 
+```
+> Note if you are building from a MacOs system you can add `--platform=linux/arm64` at the end of the command above.
+
+**Run container**
+```bash
+docker run -it -p 7861:7861 \
+-v $(pwd)/models/:/app/models/ \
+-v $(pwd)/datasets/:/app/datasets/ \
+-e TOKEN="<token>" \
+-e TEXT_ENCODER="models/example/text_encoder/keras" \
+-t textual-inversion-app /bin/bash
+```
+Parameters
+- `TOKEN`: Token used to fine-tune using textual-inversion.
+- `TEXT_ENCODER`: Path to the text encoder model.
+
 # Acknowledgments
 This code was heavily inspired by the [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/) Keras code example from Luke Wood.
 

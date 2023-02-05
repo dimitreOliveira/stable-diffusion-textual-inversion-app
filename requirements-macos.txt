@@ -3,8 +3,7 @@ gradio
 pyyaml
 requests
 pydantic
-jupyterlab
-keras-cv==0.4.1
+keras-cv==0.4.2
 tensorflow-datasets
 tensorflow-macos==2.11.0
-# tensorflow-metal # Has a tensor operation issue with StableDiffusion
+# tensorflow-metal==0.7.0 # Has a tensor operation issue with StableDiffusion
