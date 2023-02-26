@@ -3,6 +3,7 @@
 
 This APP loads a pre-trained StableDiffusion model using the Keras framework and fine-tunes it using the [Textual Inversion](https://textual-inversion.github.io/) process, you will also find here how to serve StableDiffusion model's components using [TFServing](https://github.com/tensorflow/serving), and how to demo it using a [Gradio](https://gradio.app) app.
 
+
 # Usage
 This repository has a collection of Makefile commands that covers all the functionalities provided.
 
@@ -41,32 +42,19 @@ make jupyter
 ```
 Starts the JupyterLab instance.
 
-## Docker
-
-**Build container**
 ```bash
-docker build -t textual-inversion-app . 
+make build
 ```
-> Note if you are building from a MacOs system you can add `--platform=linux/arm64` at the end of the command above.
+Builds the images for the the Gradio apps and the training feature.
 
-**Run container**
-```bash
-docker run -it -p 7861:7861 \
--v $(pwd)/models/:/app/models/ \
--v $(pwd)/datasets/:/app/datasets/ \
--e TOKEN="<token>" \
--e TEXT_ENCODER="models/example/text_encoder/keras" \
--t textual-inversion-app /bin/bash
-```
-Parameters
-- `TOKEN`: Token used to fine-tune using textual-inversion.
-- `TEXT_ENCODER`: Path to the text encoder model.
 
 # Acknowledgments
 This code was heavily inspired by the [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/) Keras code example from Luke Wood.
 
+
 # Disclaimer regarding StableDiffusion
 By using this model checkpoint, you acknowledge that its usage is subject to the terms of the CreativeML Open RAIL-M license at https://raw.githubusercontent.com/CompVis/stable-diffusion/main/LICENSE, more information about the model, its usage, and limitations at the [HuggingFace mode card](https://huggingface.co/CompVis/stable-diffusion-v1-4).
+
 
 # References
 - Keras.io blog [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/)
@@ -81,8 +69,6 @@ TODO list:
 - Improve Tests
 - Add `setup.py` file
 - TFRecord support
-- Docker support
-- Docker-compose support
 - KubeFlow support
   - Training pipeline
   - TF Serving instances

@@ -9,9 +9,9 @@ import requests
 from keras_cv.models.stable_diffusion.clip_tokenizer import SimpleTokenizer
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("App")
+logger = logging.getLogger(__file__)
 
-server_port = os.environ.get("SERVER_PORT", 7861)
+server_port = int(os.environ.get("SERVER_PORT", 7861))
 server_name = os.environ.get("SERVER_NAME", "0.0.0.0")
 prompt_token = os.environ.get("TOKEN", "<token>")
 text_encoder_url = os.environ.get(
@@ -33,6 +33,12 @@ tokenizer = SimpleTokenizer()
 tokenizer.add_tokens(prompt_token)
 
 logger.info(f'Inversed token used: "{prompt_token}"')
+
+logger.info(f'text_encoder_url: "{text_encoder_url}"')
+logger.info(f'diffusion_model_url: "{diffusion_model_url}"')
+logger.info(f'decoder_url: "{decoder_url}"')
+logger.info(f'server_port: "{server_port}"')
+logger.info(f'server_name: "{server_name}"')
 
 
 def predict_rest(json_data: str, url: str) -> np.ndarray:
@@ -86,10 +92,15 @@ def decoder_fn(latents: List[np.ndarray]) -> np.ndarray:
 
 
 def generate_fn(input_prompt: str) -> np.ndarray:
+    logger.info(f'input_prompt: "{input_prompt}"')
     encoded_text = text_encoder_fn(input_prompt)
-    latents = diffusion_model_fn(encoded_text)
-    decoded_images = decoder_fn(latents)
-    return decoded_images
+    logger.info(f'encoded_text: "{encoded_text}"')
+    return encoded_text
+    # latents = diffusion_model_fn(encoded_text)
+    # logger.info(f'encoded_text: "{latents}"')
+    # decoded_images = decoder_fn(latents)
+    # logger.info(f'encoded_text: "{decoded_images}"')
+    # return decoded_images
 
 
 iface = gr.Interface(

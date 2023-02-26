@@ -16,7 +16,7 @@ from src.trainer import (
 )
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("Train")
+logger = logging.getLogger(__file__)
 params = Params("./params.yaml")
 modelParams: ModelParams = params.model
 trainParams: TrainParams = params.train
