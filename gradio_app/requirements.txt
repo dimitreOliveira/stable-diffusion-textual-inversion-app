@@ -1,0 +1,6 @@
+numpy
+gradio
+requests
+keras-cv==0.4.2
+tensorflow-datasets
+tensorflow==2.11.0

@@ -9,7 +9,7 @@ from keras_cv.models.stable_diffusion.constants import (
 )
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("Exporter")
+logger = logging.getLogger(__file__)
 
 
 def text_encoder_exporter(model: tf.keras.Model) -> Callable:
