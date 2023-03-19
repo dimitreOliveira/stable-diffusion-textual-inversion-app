@@ -19,18 +19,15 @@ logger.info(f'Inversed token used: "{prompt_token}"')
 logger.info(f'Loading text encoder from: "{text_encoder_path}"')
 
 stable_diffusion = keras_cv.models.StableDiffusion()
-
-
 stable_diffusion.tokenizer.add_tokens(prompt_token)
-
 loaded_text_encoder_ = tf.keras.models.load_model(text_encoder_path)
 stable_diffusion._text_encoder = loaded_text_encoder_
 stable_diffusion._text_encoder.compile(jit_compile=True)
 
 
 def generate_fn(input_prompt: str) -> np.ndarray:
-    generated = stable_diffusion.text_to_image(prompt=input_prompt, batch_size=1)
-    return generated
+    generated = stable_diffusion.text_to_image(prompt=input_prompt, batch_size=1, num_steps=1)
+    return generated[0]
 
 
 iface = gr.Interface(

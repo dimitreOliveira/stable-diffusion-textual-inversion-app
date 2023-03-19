@@ -10,7 +10,6 @@ train:
 	-v $(pwd)/models/:/app/models/ \
 	-v $(pwd)/datasets/:/app/datasets/ \
 	-v /Users/$(whoami)/.keras/:/root/.keras/ \
-	-e TEXT_ENCODER=models/doll_cat/text_encoder/keras \
 	-t textual-inversion-app python train.py
 
 app:
@@ -36,6 +35,9 @@ app_serving:
 	-t app python app_serving.py
 
 serve:
+	sh scripts/start_tf_serving.sh
+
+serve_macos:
 	sh scripts/start_tf_serving_macos.sh
 
 jupyter:

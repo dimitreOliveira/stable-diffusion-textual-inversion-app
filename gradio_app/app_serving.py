@@ -33,7 +33,6 @@ tokenizer = SimpleTokenizer()
 tokenizer.add_tokens(prompt_token)
 
 logger.info(f'Inversed token used: "{prompt_token}"')
-
 logger.info(f'text_encoder_url: "{text_encoder_url}"')
 logger.info(f'diffusion_model_url: "{diffusion_model_url}"')
 logger.info(f'decoder_url: "{decoder_url}"')
@@ -92,15 +91,10 @@ def decoder_fn(latents: List[np.ndarray]) -> np.ndarray:
 
 
 def generate_fn(input_prompt: str) -> np.ndarray:
-    logger.info(f'input_prompt: "{input_prompt}"')
     encoded_text = text_encoder_fn(input_prompt)
-    logger.info(f'encoded_text: "{encoded_text}"')
-    return encoded_text
-    # latents = diffusion_model_fn(encoded_text)
-    # logger.info(f'encoded_text: "{latents}"')
-    # decoded_images = decoder_fn(latents)
-    # logger.info(f'encoded_text: "{decoded_images}"')
-    # return decoded_images
+    latents = diffusion_model_fn(encoded_text)
+    decoded_images = decoder_fn(latents)
+    return decoded_images[0]
 
 
 iface = gr.Interface(
