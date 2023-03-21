@@ -26,7 +26,17 @@ stable_diffusion._text_encoder.compile(jit_compile=True)
 
 
 def generate_fn(input_prompt: str) -> np.ndarray:
-    generated = stable_diffusion.text_to_image(prompt=input_prompt, batch_size=1, num_steps=1)
+    """Generates images from a text prompt
+
+    Args:
+        input_prompt (str): Text input prompt
+
+    Returns:
+        np.ndarray: Generated image
+    """
+    generated = stable_diffusion.text_to_image(
+        prompt=input_prompt, batch_size=1, num_steps=1
+    )
     return generated[0]
 
 

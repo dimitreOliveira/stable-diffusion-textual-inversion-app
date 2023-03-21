@@ -13,7 +13,14 @@ logger = logging.getLogger(__file__)
 
 
 def text_encoder_exporter(model: tf.keras.Model) -> Callable:
-    """Exports the text encoder module from the StableDiffusion model to be served by TFServing."""
+    """Exports the text encoder module from the StableDiffusion model to be served by TFServing
+
+    Args:
+        model (tf.keras.Model): Text encoder model
+
+    Returns:
+        Callable: Text encoder's serving signature function
+    """
     MAX_PROMPT_LENGTH = 77
     POS_IDS = tf.convert_to_tensor([list(range(MAX_PROMPT_LENGTH))], dtype=tf.int32)
     UNCONDITIONAL_TOKENS = tf.convert_to_tensor([_UNCONDITIONAL_TOKENS], dtype=tf.int32)
@@ -49,7 +56,14 @@ def text_encoder_exporter(model: tf.keras.Model) -> Callable:
 
 
 def diffusion_model_exporter(model: tf.keras.Model) -> Callable:
-    """Exports the diffusion model module from the StableDiffusion model to be served by TFServing."""
+    """Exports the diffusion model module from the StableDiffusion model to be served by TFServing
+
+    Args:
+        model (tf.keras.Model): Diffusion model
+
+    Returns:
+        Callable: Diffusion model's serving signature function
+    """
     IMG_HEIGHT = 512
     IMG_WIDTH = 512
     _ALPHAS_CUMPROD_tf = tf.constant(_ALPHAS_CUMPROD)
@@ -124,7 +138,14 @@ def diffusion_model_exporter(model: tf.keras.Model) -> Callable:
 
 
 def decoder_exporter(model: tf.keras.Model) -> Callable:
-    """Exports the decoder module from the StableDiffusion model to be served by TFServing."""
+    """Exports the decoder module from the StableDiffusion model to be served by TFServing
+
+    Args:
+        model (tf.keras.Model): Image decoder model
+
+    Returns:
+        Callable: Image decoder's serving signature function
+    """
 
     @tf.function(
         input_signature=[
@@ -151,7 +172,13 @@ def export_stable_diffusion(
     models_dir: str,
     models_version: int = 1,
 ) -> None:
-    """Exports the StableDiffusion model's inner mudules to be served by TFServing."""
+    """Exports the StableDiffusion model's inner mudules to be served by TFServing
+
+    Args:
+        stable_diffusion (keras_cv.models.StableDiffusion): Stable diffusion model
+        models_dir (str): Directory to save the model
+        models_version (int, optional): Version of the model. Defaults to 1.
+    """
     text_encoder_output_path = f"{models_dir}/text_encoder/{models_version}/"
     diffusion_model_output_path = f"{models_dir}/diffusion_model/{models_version}/"
     decoder_output_path = f"{models_dir}/decoder/{models_version}/"

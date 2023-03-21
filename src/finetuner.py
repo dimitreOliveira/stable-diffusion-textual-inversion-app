@@ -9,6 +9,8 @@ from src.utils import (
 
 
 class StableDiffusionFineTuner(tf.keras.Model):
+    """Fine tuner helper class for textual inversion training"""
+
     def __init__(
         self,
         stable_diffusion: keras_cv.models.StableDiffusion,
@@ -28,6 +30,7 @@ class StableDiffusionFineTuner(tf.keras.Model):
         )
 
     def train_step(self, data):
+        """Custom training step for textual inversion training"""
         images, embeddings = data
 
         with tf.GradientTape() as tape:

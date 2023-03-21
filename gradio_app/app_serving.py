@@ -41,6 +41,15 @@ logger.info(f'server_name: "{server_name}"')
 
 
 def predict_rest(json_data: str, url: str) -> np.ndarray:
+    """Takes a json data object and uses it to make a REST request to a given url
+
+    Args:
+        json_data (str): JSON object used to make the request
+        url (str): URL address that will receive the request
+
+    Returns:
+        np.ndarray: Request output
+    """
     json_response = requests.post(url, data=json_data)
     response = json.loads(json_response.text)
     rest_outputs = np.array(response["predictions"])
@@ -48,6 +57,14 @@ def predict_rest(json_data: str, url: str) -> np.ndarray:
 
 
 def text_encoder_fn(input_prompt: str) -> np.ndarray:
+    """Makes a request to a stabe diffusion's text encoder URL
+
+    Args:
+        input_prompt (str): Text input prompt
+
+    Returns:
+        np.ndarray: Encoded text vector
+    """
     tokens = tokenizer.encode(input_prompt)
     tokens = tokens + [padding_token] * (max_prompt_length - len(tokens))
 
@@ -62,6 +79,14 @@ def text_encoder_fn(input_prompt: str) -> np.ndarray:
 
 
 def diffusion_model_fn(encoded_text: List[dict]) -> np.ndarray:
+    """Makes a request to a stabe diffusion's diffusion model URL
+
+    Args:
+        encoded_text (List[dict]): Encoded text vector
+
+    Returns:
+        np.ndarray: Latents output from the diffusion model
+    """
     json_encoded_text = json.dumps(
         {
             "signature_name": "serving_default",
@@ -80,6 +105,14 @@ def diffusion_model_fn(encoded_text: List[dict]) -> np.ndarray:
 
 
 def decoder_fn(latents: List[np.ndarray]) -> np.ndarray:
+    """Makes a request to a stabe diffusion's image decoder URL
+
+    Args:
+        latents (List[np.ndarray]): Latents output from the diffusion model
+
+    Returns:
+        np.ndarray: Decoded generated images
+    """
     json_latents = json.dumps(
         {
             "signature_name": "serving_default",
@@ -91,6 +124,14 @@ def decoder_fn(latents: List[np.ndarray]) -> np.ndarray:
 
 
 def generate_fn(input_prompt: str) -> np.ndarray:
+    """Generates images from a text prompt
+
+    Args:
+        input_prompt (str): Text input prompt
+
+    Returns:
+        np.ndarray: Generated image
+    """
     encoded_text = text_encoder_fn(input_prompt)
     latents = diffusion_model_fn(encoded_text)
     decoded_images = decoder_fn(latents)
