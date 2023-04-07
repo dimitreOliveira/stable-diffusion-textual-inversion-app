@@ -1,6 +1,7 @@
 # StableDiffusion - Textual-Inversion
 
 ![](./assets/canarinho.jpg)
+##### Stable Diffusion fine-tuned via textual inversion on images from "Canarinho pistola" Brazil's mascot during the 2006 World Cup.
 
 If you want you can also run this repository on Google Colab [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-CsyQuqKWs1NWe55nepeUBzMK0PcRHpI?usp=sharing)
 
