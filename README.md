@@ -3,12 +3,13 @@
 ![](./assets/canarinho.jpg)
 ##### Stable Diffusion fine-tuned via textual inversion on images from "Canarinho pistola" Brazil's mascot during the 2006 World Cup.
 
-If you want you can also run this repository on Google Colab [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-CsyQuqKWs1NWe55nepeUBzMK0PcRHpI?usp=sharing)
-
-The model's weights are available at [HuggingFace models](https://huggingface.co/Dimitre/stablediffusion-canarinho_pistola) and you can also find running app version at HuggingFace Spaces [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/Yuliang/ICON)
+---
 
 This APP loads a pre-trained StableDiffusion model using the Keras framework and fine-tunes it using the [Textual Inversion](https://textual-inversion.github.io/) process, you will also find here how to serve StableDiffusion model's components using [TFServing](https://github.com/tensorflow/serving), and how to demo it using a [Gradio](https://gradio.app) app.
 
+The model's weights are available at [HuggingFace Models](https://huggingface.co/Dimitre/stablediffusion-canarinho_pistola) and you can also try a running version at HuggingFace Spaces [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/Yuliang/ICON)
+
+If you want you can also run this repository on Google Colab [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-CsyQuqKWs1NWe55nepeUBzMK0PcRHpI?usp=sharing)
 
 # Usage
 This repository has a collection of Makefile commands that covers all the functionalities provided.
