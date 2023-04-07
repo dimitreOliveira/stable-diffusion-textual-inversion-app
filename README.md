@@ -1,5 +1,10 @@
 # StableDiffusion - Textual-Inversion
-![](https://i.imgur.com/KqEeBsM.jpg)
+
+![](./assets/canarinho.jpg)
+
+If you want you can also run this repository on Google Colab [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-CsyQuqKWs1NWe55nepeUBzMK0PcRHpI?usp=sharing)
+
+The model's weights are available at [HuggingFace models](https://huggingface.co/Dimitre/stablediffusion-canarinho_pistola) and you can also find running app version at HuggingFace Spaces [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/Yuliang/ICON)
 
 This APP loads a pre-trained StableDiffusion model using the Keras framework and fine-tunes it using the [Textual Inversion](https://textual-inversion.github.io/) process, you will also find here how to serve StableDiffusion model's components using [TFServing](https://github.com/tensorflow/serving), and how to demo it using a [Gradio](https://gradio.app) app.
 
@@ -47,6 +52,7 @@ make build
 ```
 Builds the images for the the Gradio apps and the training feature.
 
+![](https://i.imgur.com/KqEeBsM.jpg)
 
 # Acknowledgments
 This code was heavily inspired by the [Teach StableDiffusion new concepts via Textual Inversion](https://keras.io/examples/generative/fine_tune_via_textual_inversion/) Keras code example from Luke Wood.
